@@ -2,6 +2,9 @@
 
 var ADS_NUM = 8;
 
+var mapElement = document.querySelector('.map');
+var pinsElement = mapElement.querySelector('.map__pins');
+
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max + 1 - min) + min);
 }
@@ -98,12 +101,32 @@ function createLocation(x) {
   };
 }
 
+// блокируем формы объявления
+var formFields = document.querySelectorAll('.ad-form__element');
+formFields.forEach(function (item) {
+  item.setAttribute('disabled', 'disabled');
+});
+
+// блокируем форму с фильтрами
+var formFilter = document.querySelector('.map__filters');
+formFilter.setAttribute('disabled', 'disabled');
+
 // функция создания одного объявления
 function createAd(number, title, x) {
   var ad = {
     author: createAuthor(number),
     location: createLocation(x),
-    offer: createOffer()
+    offer: createOffer(),
+    onClick: function () {
+      var input = document.getElementById('address');
+      input.setAttribute('value', ad.offer.address);
+      // debugger;
+
+      var cardFragment = document.createDocumentFragment();
+      cardFragment.appendChild(renderCard(ad));
+      mapElement.insertBefore(cardFragment, mapElement.querySelector('.map__filters-container'));
+    }
+
   };
 
   ad.offer.address = ad.location.x.toString() + ', ' + ad.location.y;
@@ -131,7 +154,6 @@ function genAds() {
 var ads = genAds();
 
 // **********************************************************
-document.querySelector('.map').classList.remove('map--faded');
 
 function renderPin(ad) {
   var template = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -141,19 +163,10 @@ function renderPin(ad) {
   var img = element.children[0];
   img.src = ad.author.avatar;
   img.alt = ad.offer.title;
-
+  element.addEventListener('mouseup', ad.onClick);
   return element;
 }
 
-var pinsFragment = document.createDocumentFragment();
-
-for (var i = 0; i < ads.length; i++) {
-  pinsFragment.appendChild(renderPin(ads[i]));
-}
-
-var mapElement = document.querySelector('.map');
-var pinsElement = mapElement.querySelector('.map__pins');
-pinsElement.appendChild(pinsFragment);
 
 // **********************
 function renderCard(ad) {
@@ -189,7 +202,6 @@ function renderCard(ad) {
 
   element.querySelector('.popup__description').textContent = ad.offer.description;
 
-  // debugger;
   var photosElement = element.querySelector('.popup__photos');
   var photoElements = [
     photosElement.children[0],
@@ -207,11 +219,24 @@ function renderCard(ad) {
   return element;
 }
 
-var cardsFragment = document.createDocumentFragment();
-for (var k = 0; k < ads.length; k++) {
-  cardsFragment.appendChild(renderCard(ads[k]));
-}
 
-mapElement.insertBefore(cardsFragment, mapElement.querySelector('.map__filters-container'));
-// console.log(mapElement.innerHTML);
-// debugger;
+var pinMain = document.querySelector('.map__pin--main');
+var adressPinMain = parseInt(pinMain.style.left, 10) + ', ' + parseInt(pinMain.style.top, 10);
+
+pinMain.addEventListener('mouseup', function () {
+  document.querySelector('.map').classList.remove('map--faded');
+  document.querySelector('.ad-form').classList.remove('ad-form--disabled');
+  formFields.forEach(function (item) {
+    item.removeAttribute('disabled', 'disabled');
+  });
+  var input = document.getElementById('address');
+  input.setAttribute('value', adressPinMain);
+
+  var pinsFragment = document.createDocumentFragment();
+
+  for (var i = 0; i < ads.length; i++) {
+    pinsFragment.appendChild(renderPin(ads[i]));
+  }
+
+  pinsElement.appendChild(pinsFragment);
+});
