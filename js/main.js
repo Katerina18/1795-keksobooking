@@ -126,6 +126,7 @@ function createAd(number, title, x) {
       cardFragment.appendChild(renderCard(ad));
       mapElement.insertBefore(cardFragment, mapElement.querySelector('.map__filters-container'));
     }
+
   };
 
   ad.offer.address = ad.location.x.toString() + ', ' + ad.location.y;
@@ -166,6 +167,7 @@ function renderPin(ad) {
   return element;
 }
 
+
 // **********************
 function renderCard(ad) {
   var template = document.querySelector('#card').content.querySelector('.map__card');
@@ -199,7 +201,6 @@ function renderCard(ad) {
   }
 
   element.querySelector('.popup__description').textContent = ad.offer.description;
-
 
   var photosElement = element.querySelector('.popup__photos');
   var photoElements = [
