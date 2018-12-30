@@ -360,18 +360,93 @@ function showErrorMessage() {
 
 // сброс страницы при нажатии кнопки очистить
 function onButtonClick() {
-  var cards = document.querySelector('.map__card');
+  var cards = document.querySelector('.popup');
   cards.remove();
   var pinOther = document.querySelectorAll('.pinOther');
   pinOther.forEach(function (item) {
     item.remove();
   });
   fillInputAddress();
-  btnReset.removeEventListener('click', onButtonClick);
 }
+
+// перемещение главного маркера
+(function () {
+
+  pinMain.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var dragged = false;
+
+    function onMouseMove(moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      // debugger;
+      var mapWidth = document.querySelector('.map__pins').clientWidth;
+      var mapHeight = document.querySelector('.map__pins').clientHeight;
+      var pinWidth = pinMain.offsetWidth;
+      var pinHeight = pinMain.offsetHeight;
+
+      if (pinMain.offsetLeft - shift.x < 0) {
+        shift.x = pinMain.offsetLeft;
+      } else if (pinMain.offsetLeft - shift.x > mapWidth - pinWidth) {
+        shift.x = pinMain.offsetLeft - (mapWidth - pinWidth);
+      }
+
+      if (pinMain.offsetTop - shift.y < 0) {
+        shift.y = pinMain.offsetTop;
+      } else if (pinMain.offsetTop - shift.y > mapHeight - pinHeight) {
+        shift.y = pinMain.offsetTop - (mapHeight - pinHeight);
+      }
+
+      pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
+      pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+
+      adressPinMain = parseInt(pinMain.style.left, 10) + ', ' + parseInt(pinMain.style.top, 10);
+      fillInputAddress();
+    }
+
+    function onMouseUp(upEvt) {
+      upEvt.preventDefault();
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+
+      if (dragged) {
+        function onClickPreventDefault() {
+          evt.preventDefault();
+          pinMain.removeEventListener('click', onClickPreventDefault);
+        }
+        pinMain.addEventListener('click', onClickPreventDefault);
+      }
+    }
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
+
+})();
 
 
 // EventListener
+
+// клик на кнопку очистить
+btnReset.addEventListener('click', onButtonClick);
+
+
 // отправляем данные на сервер
 form.addEventListener('submit', function (ev) {
   var data = new FormData(form);
@@ -389,8 +464,9 @@ form.addEventListener('submit', function (ev) {
   ev.preventDefault();
 }, false);
 
+
 // нажатие на главную метку - страница в активном состоянии
-pinMain.addEventListener('mouseup', function () {
+pinMain.addEventListener('mousedown', function () {
   document.querySelector('.map').classList.remove('map--faded');
   document.querySelector('.ad-form').classList.remove('ad-form--disabled');
   formFields.forEach(function (item) {
@@ -403,6 +479,7 @@ pinMain.addEventListener('mouseup', function () {
   }
   pinsElement.appendChild(pinsFragment);
 });
+
 
 // валидация формы заголовок объявления, сообщения об ошибке
 headerAdInput.addEventListener('invalid', function () {
@@ -451,9 +528,6 @@ priceInput.addEventListener('input', function (evt) {
 document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('type').onchange = onSelectChanged;
 }, false);
-
-// клик на кнопку очистить
-btnReset.addEventListener('click', onButtonClick);
 
 // изменения инпутов время заезда и выезда
 document.addEventListener('DOMContentLoaded', onLoad, false);
