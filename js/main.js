@@ -425,11 +425,11 @@ function onButtonClick() {
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
 
+      function onClickPreventDefault() {
+        evt.preventDefault();
+        pinMain.removeEventListener('click', onClickPreventDefault);
+      }
       if (dragged) {
-        function onClickPreventDefault() {
-          evt.preventDefault();
-          pinMain.removeEventListener('click', onClickPreventDefault);
-        }
         pinMain.addEventListener('click', onClickPreventDefault);
       }
     }
