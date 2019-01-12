@@ -10,9 +10,6 @@
   // кнопка очистить
   var btnReset = document.querySelector('.ad-form__reset');
 
-  // генерация объявлений
-  var ads = window.genAds();
-
   // функция добавляет адрес map__pin в инпут адреc
   function fillInputAddress() {
     var input = document.getElementById('address');
@@ -106,6 +103,7 @@
 
   // нажатие на главную метку - страница в активном состоянии
   pinMain.addEventListener('mousedown', function () {
+    var ads = window.getAds();
     document.querySelector('.map').classList.remove('map--faded');
     document.querySelector('.ad-form').classList.remove('ad-form--disabled');
     window.formFields.forEach(function (item) {

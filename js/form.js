@@ -118,10 +118,14 @@
   }
 
   function showErrorMessage() {
+    // debugger;
     var template = document.querySelector('#error').content.querySelector('.error');
     var element = template.cloneNode(true);
-    var btn = document.querySelector('.ad-form__submit');
-    btn.appendChild(element);
+    var promo = document.querySelector('.promo');
+    var parent = promo.parentNode;
+    // var main = document.getElementsByTagName('main');
+    parent.insertBefore(element, promo);
+    // main.appendChild(element);
     function onMessageEscPress(evt) {
       if (evt.keyCode === 27) {
         element.remove();
