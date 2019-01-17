@@ -9,6 +9,7 @@
     var img = element.children[0];
     img.src = ad.author.avatar;
     img.alt = ad.offer.title;
+    // debugger;
     element.addEventListener('mouseup', ad.onClick);
     return element;
   };

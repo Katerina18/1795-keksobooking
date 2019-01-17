@@ -15,7 +15,6 @@
       xhr.timeout = 10000;
 
       xhr.onload = function () {
-      // xhr.addEventListener('load', function (evt) {
         if (xhr.status === 200) {
           if (loader.funcSuccess) {
             loader.funcSuccess(xhr.response);
@@ -25,11 +24,9 @@
             loader.funcError('Ошибка соединения с сервером ' + xhr.status + '\n' + xhr.statusText);
           }
         }
-      // });
       };
 
       xhr.addEventListener('error', function () {
-        // debugger;
         if (loader.funcError) {
           loader.funcError('Нет соединения с сервером');
         }

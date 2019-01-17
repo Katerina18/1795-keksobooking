@@ -123,9 +123,7 @@
     var element = template.cloneNode(true);
     var promo = document.querySelector('.promo');
     var parent = promo.parentNode;
-    // var main = document.getElementsByTagName('main');
     parent.insertBefore(element, promo);
-    // main.appendChild(element);
     function onMessageEscPress(evt) {
       if (evt.keyCode === 27) {
         element.remove();
