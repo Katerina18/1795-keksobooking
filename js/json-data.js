@@ -10,11 +10,13 @@
       location: response.location,
       offer: response.offer,
       onClick: function () {
+        window.closeCard();
+
         var input = document.getElementById('address');
         input.setAttribute('value', ad.offer.address);
 
         var cardFragment = document.createDocumentFragment();
-        cardFragment.appendChild(window.renderCard(ad));
+        cardFragment.appendChild(window.card.renderCard(ad));
         mapElement.insertBefore(cardFragment, mapElement.querySelector('.map__filters-container'));
       }
     };
