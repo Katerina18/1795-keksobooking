@@ -39,8 +39,8 @@
     fillInputAddress();
   };
 
-  // перемещение главного маркера
-  pinMain.addEventListener('mousedown', function (evt) {
+
+  function onPinMove(evt) {
     evt.preventDefault();
 
     var startCoords = {
@@ -103,12 +103,11 @@
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
-  });
+  };
 
-  // клик на кнопку очистить
-  btnReset.addEventListener('click', window.clearPins);
 
   window.placePins = function () {
+    var PINS_NUMBER = 5;
     var ads = window.getAds();
     document.querySelector('.map').classList.remove('map--faded');
     document.querySelector('.ad-form').classList.remove('ad-form--disabled');
@@ -118,14 +117,12 @@
     fillInputAddress();
 
     var pinsFragment = document.createDocumentFragment();
-
-    var N = 5;
-    var n = 0;
+    var pinNumber = 0;
 
     for (var i = 0; i < ads.length; i++) {
       if (window.adFilter.filter(ads[i])) {
         pinsFragment.appendChild(window.renderPin(ads[i]));
-        if (++n >= N) {
+        if (++pinNumber >= PINS_NUMBER) {
           break;
         }
       }
@@ -135,6 +132,12 @@
       pinsElement.appendChild(pinsFragment);
     }
   };
+
+  // перемещение главного маркера
+  pinMain.addEventListener('mousedown', onPinMove);
+
+  // клик на кнопку очистить
+  btnReset.addEventListener('click', window.clearPins);
 
   // нажатие на главную метку - страница в активном состоянии
   pinMain.addEventListener('mousedown', window.placePins);

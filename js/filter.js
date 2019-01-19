@@ -37,17 +37,17 @@
         var f = adFilter;
         var o = ad.offer;
 
-        var OK = f.type === null || o.type === null || o.type === f.type;
-        OK &= f.priceMin === null || f.priceMax === null || o.price === null || (o.price >= f.priceMin && o.price < f.priceMax);
-        OK &= f.rooms === null || o.rooms === null || o.rooms === f.rooms;
-        OK &= f.guests === null || o.guests === null || o.guests === f.guests;
+        var result =  Utils.equal(o.type, f.type) &&
+                      Utils.between(o.price, f.priceMin, f.priceMax) &&
+                      Utils.equal(o.rooms, f.rooms) &&
+                      Utils.equal(o.guests, f.guests);
 
         if (o.features !== null && f.features !== null) {
           for (var i = 0; i < f.features.length; i++) {
-            OK = OK && o.features.includes(f.features[i]);
+            result &= Utils.includes(f.features[i], o.features);
           }
         }
-        return OK;
+        return result;
       } else {
         return false;
       }
@@ -56,7 +56,7 @@
     initial: function () {
       adFilter.clear();
 
-      adFilter.type = adFilter.TYPES.includes(adFilter.selectType.value) ? adFilter.selectType.value : null;
+      adFilter.type = Utils.includes(adFilter.selectType.value, adFilter.TYPES) ? adFilter.selectType.value : null;
 
       switch (adFilter.selectPrice.value) {
         case 'low':
@@ -117,7 +117,6 @@
 
     onChange: function () {
       window.clearPins();
-      // debugger;
       adFilter.initial();
       window.placePins();
     }
