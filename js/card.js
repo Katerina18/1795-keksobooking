@@ -21,22 +21,22 @@
       element.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
 
       var featuresElement = element.querySelector('.popup__features');
-      if (!Utils.include('wifi', ad.offer.features)) {
+      if (!window.Utils.include('wifi', ad.offer.features)) {
         featuresElement.removeChild(featuresElement.querySelector('.popup__feature--wifi'));
       }
-      if (!Utils.include('dishwasher', ad.offer.features)) {
+      if (!window.Utils.include('dishwasher', ad.offer.features)) {
         featuresElement.removeChild(featuresElement.querySelector('.popup__feature--dishwasher'));
       }
-      if (!Utils.include('parking', ad.offer.features)) {
+      if (!window.Utils.include('parking', ad.offer.features)) {
         featuresElement.removeChild(featuresElement.querySelector('.popup__feature--parking'));
       }
-      if (!Utils.include('washer', ad.offer.features)) {
+      if (!window.Utils.include('washer', ad.offer.features)) {
         featuresElement.removeChild(featuresElement.querySelector('.popup__feature--washer'));
       }
-      if (!Utils.include('elevator', ad.offer.features)) {
+      if (!window.Utils.include('elevator', ad.offer.features)) {
         featuresElement.removeChild(featuresElement.querySelector('.popup__feature--elevator'));
       }
-      if (!Utils.include('conditioner', ad.offer.features)) {
+      if (!window.Utils.include('conditioner', ad.offer.features)) {
         featuresElement.removeChild(featuresElement.querySelector('.popup__feature--conditioner'));
       }
 
