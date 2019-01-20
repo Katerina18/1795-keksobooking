@@ -34,17 +34,17 @@
 
     filter: function (ad) {
       if (ad && ad.offer) {
-        var f = adFilter;
-        var o = ad.offer;
+        var filter = adFilter;
+        var offer = ad.offer;
 
-        var result =  Utils.equal(o.type, f.type) &&
-                      Utils.between(o.price, f.priceMin, f.priceMax) &&
-                      Utils.equal(o.rooms, f.rooms) &&
-                      Utils.equal(o.guests, f.guests);
+        var result =  Utils.isEqual(offer.type, filter.type) &&
+                      Utils.isBetween(offer.price, filter.priceMin, filter.priceMax) &&
+                      Utils.isEqual(offer.rooms, filter.rooms) &&
+                      Utils.isEqual(offer.guests, filter.guests);
 
-        if (o.features !== null && f.features !== null) {
-          for (var i = 0; i < f.features.length; i++) {
-            result &= Utils.includes(f.features[i], o.features);
+        if (offer.features !== null && filter.features !== null) {
+          for (var i = 0; i < filter.features.length; i++) {
+            result &= Utils.include(filter.features[i], offer.features);
           }
         }
         return result;
@@ -56,7 +56,7 @@
     initial: function () {
       adFilter.clear();
 
-      adFilter.type = Utils.includes(adFilter.selectType.value, adFilter.TYPES) ? adFilter.selectType.value : null;
+      adFilter.type = Utils.include(adFilter.selectType.value, adFilter.TYPES) ? adFilter.selectType.value : null;
 
       switch (adFilter.selectPrice.value) {
         case 'low':

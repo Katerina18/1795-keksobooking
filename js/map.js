@@ -8,7 +8,7 @@
   var adressPinMain = parseInt(pinMain.style.left, 10) + ', ' + parseInt(pinMain.style.top, 10);
 
   // кнопка очистить
-  var btnReset = document.querySelector('.ad-form__reset');
+  var buttonReset = document.querySelector('.ad-form__reset');
 
   // функция добавляет адрес map__pin в инпут адреc
   function fillInputAddress() {
@@ -137,7 +137,7 @@
   pinMain.addEventListener('mousedown', onPinMove);
 
   // клик на кнопку очистить
-  btnReset.addEventListener('click', window.clearPins);
+  buttonReset.addEventListener('click', window.clearPins);
 
   // нажатие на главную метку - страница в активном состоянии
   pinMain.addEventListener('mousedown', window.placePins);
