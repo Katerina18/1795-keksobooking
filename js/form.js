@@ -2,15 +2,11 @@
 
 (function () {
   var form = document.querySelector('.ad-form');
+  window.avatar = document.getElementById('avatar');
 
   // форма объявления
   var formFields = document.querySelectorAll('.ad-form__element');
   window.formFields = formFields;
-
-  // блокируем формы объявления
-  formFields.forEach(function (item) {
-    item.setAttribute('disabled', 'disabled');
-  });
 
   // блокируем форму с фильтрами
   var formFilter = document.querySelector('.map__filters');
@@ -21,6 +17,13 @@
 
   // инпут количество комнат
   var roomNumber = document.getElementById('room_number');
+
+  window.avatar.setAttribute('disabled', 'disabled');
+
+  // блокируем формы объявления
+  formFields.forEach(function (item) {
+    item.setAttribute('disabled', 'disabled');
+  });
 
   // валидация формы тип жилья / цена
   function onSelectChanged(evt) {
@@ -118,7 +121,6 @@
   }
 
   function showErrorMessage() {
-    // debugger;
     var template = document.querySelector('#error').content.querySelector('.error');
     var element = template.cloneNode(true);
     var promo = document.querySelector('.promo');
@@ -150,12 +152,18 @@
   // отправляем данные на сервер
   form.addEventListener('submit', function (ev) {
     var data = new FormData(form);
+    var file = window.getAvatarFile();
+    if (file) {
+      data.append('avatar', file, file.name);
+    }
+
     var http = new XMLHttpRequest();
     http.open(form.method, form.action, true);
     http.onload = function () {
       if (http.status === 200) {
         showUploadMessage();
         form.reset();
+        window.clearAvatarFile();
       } else {
         showErrorMessage();
       }
