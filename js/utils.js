@@ -24,6 +24,15 @@
     // min === null or max === null means infinity
     isBetween: function (value, min, max) {
       return value !== null && (min === null || value >= min) && (max === null || value < max);
+    },
+
+    addClickListener: function (element, onEvent) {
+      element.addEventListener('click', onEvent);
+      element.addEventListener('keyup', function (event) {
+        if (event.keyCode === 13) {
+          element.click();
+        }
+      });
     }
   };
 })();

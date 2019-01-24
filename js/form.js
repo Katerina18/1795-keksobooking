@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var buttonSubmit = document.querySelector('.ad-form__submit');
+
   var form = document.querySelector('.ad-form');
   window.avatar = document.getElementById('avatar');
 
@@ -102,15 +104,14 @@
   function showUploadMessage() {
     var template = document.querySelector('#success').content.querySelector('.success');
     var element = template.cloneNode(true);
-    var btn = document.querySelector('.ad-form__submit');
-    btn.appendChild(element);
-    function onMessageEscPress(evt) {
+    buttonSubmit.appendChild(element);
+    window.onMessageEscPress = function (evt) {
       if (evt.keyCode === 27) {
         element.remove();
-        document.removeEventListener('keydown', onMessageEscPress);
+        document.removeEventListener('keydown', window.onMessageEscPress);
       }
-    }
-    document.addEventListener('keydown', onMessageEscPress);
+    };
+    document.addEventListener('keydown', window.onMessageEscPress);
 
     function onElementRemove() {
       element.remove();
@@ -134,12 +135,12 @@
     }
     document.addEventListener('keydown', onMessageEscPress);
 
-    var btnEsc = document.querySelector('.error__button');
+    var errorButton = document.querySelector('.error__button');
     function onErrorButtonClick() {
       element.remove();
-      btnEsc.removeEventListener('click', onErrorButtonClick);
+      errorButton.removeEventListener('click', onErrorButtonClick);
     }
-    btnEsc.addEventListener('click', onErrorButtonClick);
+    errorButton.addEventListener('click', onErrorButtonClick);
 
     var messageError = document.querySelector('.error');
     function onElementRemove() {
@@ -171,6 +172,7 @@
     http.send(data);
     ev.preventDefault();
   }, false);
+
 
   // валидация формы заголовок объявления, сообщения об ошибке
   headerAdInput.addEventListener('invalid', function () {

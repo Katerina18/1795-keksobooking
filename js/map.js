@@ -1,11 +1,13 @@
 'use strict';
 (function () {
-
   var pinsElement = document.querySelector('.map__pins');
 
   // активное состояние страницы
   var pinMain = document.querySelector('.map__pin--main');
   var adressPinMain = parseInt(pinMain.style.left, 10) + ', ' + parseInt(pinMain.style.top, 10);
+  var mainPinEnable = true;
+  var pinMainDefaultLeft = parseInt(pinMain.style.left, 10);
+  var pinMainDefaultTop = parseInt(pinMain.style.top, 10);
 
   // кнопка очистить
   var buttonReset = document.querySelector('.ad-form__reset');
@@ -16,7 +18,6 @@
     input.setAttribute('value', adressPinMain);
   }
 
-  // сброс страницы при нажатии кнопки очистить
   window.closeCard = function () {
     var card = document.querySelector('.popup');
     if (card) {
@@ -36,6 +37,11 @@
   window.clearPins = function () {
     window.closeCard();
     window.removePins();
+    mainPinEnable = true;
+    pinMain.focus();
+    pinMain.style.left = pinMainDefaultLeft + 'px';
+    pinMain.style.top = pinMainDefaultTop + 'px';
+    adressPinMain = pinMainDefaultLeft + ', ' + pinMainDefaultTop;
     fillInputAddress();
   };
 
@@ -105,32 +111,36 @@
     document.addEventListener('mouseup', onMouseUp);
   }
 
-
   window.placePins = function () {
     var PINS_NUMBER = 5;
-    var ads = window.getAds();
-    document.querySelector('.map').classList.remove('map--faded');
-    document.querySelector('.ad-form').classList.remove('ad-form--disabled');
-    window.avatar.removeAttribute('disabled', 'disabled');
-    window.formFields.forEach(function (item) {
-      item.removeAttribute('disabled', 'disabled');
-    });
-    fillInputAddress();
 
-    var pinsFragment = document.createDocumentFragment();
-    var pinNumber = 0;
+    if (mainPinEnable) {
+      mainPinEnable = false;
 
-    for (var i = 0; i < ads.length; i++) {
-      if (window.adFilter.filter(ads[i])) {
-        pinsFragment.appendChild(window.renderPin(ads[i]));
-        if (++pinNumber >= PINS_NUMBER) {
-          break;
+      var ads = window.getAds();
+      document.querySelector('.map').classList.remove('map--faded');
+      document.querySelector('.ad-form').classList.remove('ad-form--disabled');
+      window.avatar.removeAttribute('disabled', 'disabled');
+      window.formFields.forEach(function (item) {
+        item.removeAttribute('disabled', 'disabled');
+      });
+      fillInputAddress();
+
+      var pinsFragment = document.createDocumentFragment();
+      var pinNumber = 0;
+
+      for (var i = 0; i < ads.length; i++) {
+        if (window.adFilter.filter(ads[i])) {
+          pinsFragment.appendChild(window.renderPin(ads[i]));
+          if (++pinNumber >= PINS_NUMBER) {
+            break;
+          }
         }
       }
-    }
 
-    if (pinsFragment.length !== 0) {
-      pinsElement.appendChild(pinsFragment);
+      if (pinsFragment.length !== 0) {
+        pinsElement.appendChild(pinsFragment);
+      }
     }
   };
 
@@ -138,9 +148,11 @@
   pinMain.addEventListener('mousedown', onPinMove);
 
   // клик на кнопку очистить
-  buttonReset.addEventListener('click', window.clearPins);
+  window.Utils.addClickListener(buttonReset, window.clearPins);
 
   // нажатие на главную метку - страница в активном состоянии
-  pinMain.addEventListener('mousedown', window.placePins);
+  window.Utils.addClickListener(pinMain, window.placePins);
+
+  pinMain.focus();
 
 })();

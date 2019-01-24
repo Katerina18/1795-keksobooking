@@ -18,6 +18,12 @@
         var cardFragment = document.createDocumentFragment();
         cardFragment.appendChild(window.card.renderCard(ad));
         mapElement.insertBefore(cardFragment, mapElement.querySelector('.map__filters-container'));
+      },
+
+      onEnter: function (evt) {
+        if (evt.keyCode === 13) {
+          ad.onClick();
+        }
       }
     };
     return ad;

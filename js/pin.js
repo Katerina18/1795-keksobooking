@@ -10,6 +10,7 @@
     img.src = ad.author.avatar;
     img.alt = ad.offer.title;
     element.addEventListener('mouseup', ad.onClick);
+    element.addEventListener('keydown', ad.onEnter);
     return element;
   };
 })();

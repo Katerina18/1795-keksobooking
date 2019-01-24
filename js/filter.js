@@ -1,7 +1,8 @@
 'use strict';
 
 (function () {
-  var adFilter = {
+  var filter = {
+    TIMEOUT: 250,
     TYPES: ['palace', 'flat', 'house', 'bungalo'],
     FEATURES: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
     priceMin: null,
@@ -10,6 +11,9 @@
     rooms: null,
     guests: null,
     features: [],
+
+    lock: false,
+    changed: false,
 
     selectType: document.getElementById('housing-type'),
     selectPrice: document.getElementById('housing-price'),
@@ -24,17 +28,16 @@
     checkboxCondition: document.getElementById('filter-conditioner'),
 
     clear: function () {
-      adFilter.priceMin = null;
-      adFilter.priceMax = null;
-      adFilter.type = null;
-      adFilter.rooms = null;
-      adFilter.guests = null;
-      adFilter.features = [];
+      filter.priceMin = null;
+      filter.priceMax = null;
+      filter.type = null;
+      filter.rooms = null;
+      filter.guests = null;
+      filter.features = [];
     },
 
     filter: function (ad) {
       if (ad && ad.offer) {
-        var filter = adFilter;
         var offer = ad.offer;
 
         var result = window.Utils.isEqual(offer.type, filter.type) &&
@@ -54,85 +57,103 @@
     },
 
     initial: function () {
-      adFilter.clear();
+      filter.clear();
 
-      adFilter.type = window.Utils.include(adFilter.selectType.value, adFilter.TYPES) ? adFilter.selectType.value : null;
+      filter.type = window.Utils.include(filter.selectType.value, filter.TYPES) ? filter.selectType.value : null;
 
-      switch (adFilter.selectPrice.value) {
+      switch (filter.selectPrice.value) {
         case 'low':
-          adFilter.priceMin = null;
-          adFilter.priceMax = 10000;
+          filter.priceMin = null;
+          filter.priceMax = 10000;
           break;
         case 'middle':
-          adFilter.priceMin = 10000;
-          adFilter.priceMax = 50000;
+          filter.priceMin = 10000;
+          filter.priceMax = 50000;
           break;
         case 'high':
-          adFilter.priceMin = 50000;
-          adFilter.priceMax = null;
+          filter.priceMin = 50000;
+          filter.priceMax = null;
           break;
         default:
-          adFilter.priceMin = null;
-          adFilter.priceMax = null;
+          filter.priceMin = null;
+          filter.priceMax = null;
           break;
       }
 
-      switch (adFilter.selectRooms.value) {
+      switch (filter.selectRooms.value) {
         case '1': case '2': case '3':
-          adFilter.rooms = parseInt(adFilter.selectRooms.value, 10);
+          filter.rooms = parseInt(filter.selectRooms.value, 10);
           break;
         default:
-          adFilter.rooms = null;
+          filter.rooms = null;
           break;
       }
 
-      switch (adFilter.selectGuests.value) {
+      switch (filter.selectGuests.value) {
         case '0': case '1': case '2':
-          adFilter.guests = parseInt(adFilter.selectGuests.value, 10);
+          filter.guests = parseInt(filter.selectGuests.value, 10);
           break;
         default:
-          adFilter.guests = null;
+          filter.guests = null;
           break;
       }
 
-      if (adFilter.checkboxWiFi.checked) {
-        adFilter.features.push(adFilter.FEATURES[0]);
+      if (filter.checkboxWiFi.checked) {
+        filter.features.push(filter.FEATURES[0]);
       }
-      if (adFilter.checkboxDisher.checked) {
-        adFilter.features.push(adFilter.FEATURES[1]);
+      if (filter.checkboxDisher.checked) {
+        filter.features.push(filter.FEATURES[1]);
       }
-      if (adFilter.checkboxParking.checked) {
-        adFilter.features.push(adFilter.FEATURES[2]);
+      if (filter.checkboxParking.checked) {
+        filter.features.push(filter.FEATURES[2]);
       }
-      if (adFilter.checkboxWasher.checked) {
-        adFilter.features.push(adFilter.FEATURES[3]);
+      if (filter.checkboxWasher.checked) {
+        filter.features.push(filter.FEATURES[3]);
       }
-      if (adFilter.checkboxElevator.checked) {
-        adFilter.features.push(adFilter.FEATURES[4]);
+      if (filter.checkboxElevator.checked) {
+        filter.features.push(filter.FEATURES[4]);
       }
-      if (adFilter.checkboxCondition.checked) {
-        adFilter.features.push(adFilter.FEATURES[5]);
+      if (filter.checkboxCondition.checked) {
+        filter.features.push(filter.FEATURES[5]);
       }
     },
 
-    onChange: function () {
+    changeNoneLock: function () {
       window.clearPins();
-      adFilter.initial();
+      filter.initial();
       window.placePins();
+      filter.changed = false;
+    },
+
+    onChange: function () {
+      filter.changed = true;
+
+      if (!filter.lock) {
+        filter.lock = true;
+        filter.changeNoneLock();
+
+        setTimeout(function () {
+          filter.lock = false;
+
+          if (filter.changed) {
+            filter.changeNoneLock();
+          }
+        }, filter.TIMEOUT);
+      }
     }
   };
 
-  adFilter.selectType.addEventListener('change', adFilter.onChange);
-  adFilter.selectPrice.addEventListener('change', adFilter.onChange);
-  adFilter.selectRooms.addEventListener('change', adFilter.onChange);
-  adFilter.selectGuests.addEventListener('change', adFilter.onChange);
+  filter.selectType.addEventListener('change', filter.onChange);
+  filter.selectPrice.addEventListener('change', filter.onChange);
+  filter.selectRooms.addEventListener('change', filter.onChange);
+  filter.selectGuests.addEventListener('change', filter.onChange);
 
-  adFilter.checkboxWiFi.addEventListener('click', adFilter.onChange);
-  adFilter.checkboxDisher.addEventListener('click', adFilter.onChange);
-  adFilter.checkboxParking.addEventListener('click', adFilter.onChange);
-  adFilter.checkboxWasher.addEventListener('click', adFilter.onChange);
-  adFilter.checkboxElevator.addEventListener('click', adFilter.onChange);
-  adFilter.checkboxCondition.addEventListener('click', adFilter.onChange);
+  window.Utils.addClickListener(filter.checkboxWiFi, filter.onChange);
+  window.Utils.addClickListener(filter.checkboxDisher, filter.onChange);
+  window.Utils.addClickListener(filter.checkboxParking, filter.onChange);
+  window.Utils.addClickListener(filter.checkboxWasher, filter.onChange);
+  window.Utils.addClickListener(filter.checkboxElevator, filter.onChange);
+  window.Utils.addClickListener(filter.checkboxCondition, filter.onChange);
 
-  window.adFilter = adFilter;
+  window.adFilter = filter;
 })();

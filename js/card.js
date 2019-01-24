@@ -6,7 +6,14 @@
 
     onClick: function () {
       card.closeButton.removeEventListener('click', card.onClick);
+      document.removeEventListener('keydown', card.onEscape);
       window.closeCard();
+    },
+
+    onEscape: function (evt) {
+      if (evt.keyCode === 27) {
+        card.onClick();
+      }
     },
 
     renderCard: function (ad) {
@@ -58,6 +65,7 @@
 
       card.closeButton = element.querySelector('.popup__close');
       card.closeButton.addEventListener('click', card.onClick);
+      document.addEventListener('keydown', card.onEscape);
 
       return element;
     }
