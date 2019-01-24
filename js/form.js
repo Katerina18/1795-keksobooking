@@ -1,18 +1,24 @@
 'use strict';
 
 (function () {
-  var buttonSubmit = document.querySelector('.ad-form__submit');
 
   var form = document.querySelector('.ad-form');
   window.avatar = document.getElementById('avatar');
+
+  document.querySelector('.ad-form').classList.add('ad-form--disabled');
+
+  // блокируем форму с фильтрами
+  document.querySelector('.map__filters').classList.add('ad-form--disabled');
 
   // форма объявления
   var formFields = document.querySelectorAll('.ad-form__element');
   window.formFields = formFields;
 
-  // блокируем форму с фильтрами
-  var formFilter = document.querySelector('.map__filters');
-  formFilter.setAttribute('disabled', 'disabled');
+  var formFilter = document.querySelectorAll('.map__filter');
+  window.formFilter = formFilter;
+  formFilter.forEach(function (item) {
+    item.setAttribute('disabled', 'disabled');
+  });
 
   // инпут заголовок объявления
   var headerAdInput = document.getElementById('title');
@@ -104,21 +110,26 @@
   function showUploadMessage() {
     var template = document.querySelector('#success').content.querySelector('.success');
     var element = template.cloneNode(true);
-    buttonSubmit.appendChild(element);
-    window.onMessageEscPress = function (evt) {
-      if (evt.keyCode === 27) {
-        element.remove();
-        document.removeEventListener('keydown', window.onMessageEscPress);
-      }
-    };
-    document.addEventListener('keydown', window.onMessageEscPress);
+    var promo = document.querySelector('.promo');
+    var parent = promo.parentNode;
+    parent.insertBefore(element, promo);
 
-    function onElementRemove() {
-      element.remove();
-      messageOk.removeEventListener('click', onElementRemove);
+    function onSuccessEsc(evt) {
+      if (evt.keyCode === 27) {
+        document.removeEventListener('keydown', onSuccessEsc);
+        element.removeEventListener('click', onSuccessClick);
+        element.remove();
+      }
     }
-    var messageOk = document.querySelector('.success');
-    messageOk.addEventListener('click', onElementRemove);
+
+    function onSuccessClick() {
+      document.removeEventListener('keydown', onSuccessEsc);
+      element.removeEventListener('click', onSuccessClick);
+      element.remove();
+    }
+
+    document.addEventListener('keydown', onSuccessEsc);
+    element.addEventListener('click', onSuccessClick);
   }
 
   function showErrorMessage() {
@@ -127,27 +138,29 @@
     var promo = document.querySelector('.promo');
     var parent = promo.parentNode;
     parent.insertBefore(element, promo);
-    function onMessageEscPress(evt) {
-      if (evt.keyCode === 27) {
-        element.remove();
-        document.removeEventListener('keydown', onMessageEscPress);
-      }
-    }
-    document.addEventListener('keydown', onMessageEscPress);
 
     var errorButton = document.querySelector('.error__button');
-    function onErrorButtonClick() {
-      element.remove();
-      errorButton.removeEventListener('click', onErrorButtonClick);
-    }
-    errorButton.addEventListener('click', onErrorButtonClick);
-
     var messageError = document.querySelector('.error');
-    function onElementRemove() {
-      element.remove();
-      messageError.removeEventListener('click', onElementRemove);
+
+    function onErrorEsc(evt) {
+      if (evt.keyCode === 27) {
+        document.removeEventListener('keydown', onErrorEsc);
+        errorButton.removeEventListener('click', onErrorClick);
+        messageError.removeEventListener('click', onErrorClick);
+        element.remove();
+      }
     }
-    messageError.addEventListener('click', onElementRemove);
+
+    function onErrorClick() {
+      document.removeEventListener('keydown', onErrorEsc);
+      errorButton.removeEventListener('click', onErrorClick);
+      messageError.removeEventListener('click', onErrorClick);
+      element.remove();
+    }
+
+    document.addEventListener('keydown', onErrorEsc);
+    errorButton.addEventListener('click', onErrorClick);
+    messageError.addEventListener('click', onErrorClick);
   }
 
   // отправляем данные на сервер
@@ -158,6 +171,7 @@
       data.append('avatar', file, file.name);
     }
 
+
     var http = new XMLHttpRequest();
     http.open(form.method, form.action, true);
     http.onload = function () {
@@ -165,6 +179,7 @@
         showUploadMessage();
         form.reset();
         window.clearAvatarFile();
+        window.clearPins();
       } else {
         showErrorMessage();
       }

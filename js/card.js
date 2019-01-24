@@ -22,7 +22,7 @@
       element.children[0].src = ad.author.avatar;
       element.querySelector('.popup__title').textContent = ad.offer.title;
       element.querySelector('.popup__text--address').textContent = ad.offer.address;
-      element.querySelector('.popup__text--price').innerHTML = ad.offer.price + ' &#x20bd;<span>/ночь</span>';
+      element.querySelector('.popup__text--price').textContent = ad.offer.price + ' ₽/ночь';
       element.querySelector('.popup__type').textContent = ad.offer.type;
       element.querySelector('.popup__text--capacity').textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей';
       element.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;

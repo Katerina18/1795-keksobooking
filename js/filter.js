@@ -36,7 +36,7 @@
       filter.features = [];
     },
 
-    filter: function (ad) {
+    choose: function (ad) {
       if (ad && ad.offer) {
         var offer = ad.offer;
 
@@ -47,7 +47,10 @@
 
         if (offer.features !== null && filter.features !== null) {
           for (var i = 0; i < filter.features.length; i++) {
-            result &= window.Utils.include(filter.features[i], offer.features);
+            result = result & window.Utils.include(filter.features[i], offer.features);
+            if (!result) {
+              break;
+            }
           }
         }
         return result;

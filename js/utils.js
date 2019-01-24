@@ -3,7 +3,7 @@
 (function () {
   window.Utils = {
 
-    // Is value included in array?
+    // проверяем есть ли значение в массиве
     include: function (value, array) {
       if (Array.isArray(array) && value !== null) {
         for (var i = 0; i < array.length; i++) {
@@ -15,21 +15,19 @@
       return false;
     },
 
-    // value equals to mask
-    // mask === null means any value
+    // value равно mask, mask === null (любое значение)
     isEqual: function (value, mask) {
       return mask === null || (value !== null && value === mask);
     },
 
-    // min === null or max === null means infinity
     isBetween: function (value, min, max) {
       return value !== null && (min === null || value >= min) && (max === null || value < max);
     },
 
     addClickListener: function (element, onEvent) {
       element.addEventListener('click', onEvent);
-      element.addEventListener('keyup', function (event) {
-        if (event.keyCode === 13) {
+      element.addEventListener('keyup', function (keyupEvent) {
+        if (keyupEvent.keyCode === 13) {
           element.click();
         }
       });

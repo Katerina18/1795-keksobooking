@@ -119,8 +119,12 @@
 
       var ads = window.getAds();
       document.querySelector('.map').classList.remove('map--faded');
+      document.querySelector('.map__filters').classList.remove('ad-form--disabled');
       document.querySelector('.ad-form').classList.remove('ad-form--disabled');
       window.avatar.removeAttribute('disabled', 'disabled');
+      window.formFilter.forEach(function (item) {
+        item.removeAttribute('disabled', 'disabled');
+      });
       window.formFields.forEach(function (item) {
         item.removeAttribute('disabled', 'disabled');
       });
@@ -130,9 +134,10 @@
       var pinNumber = 0;
 
       for (var i = 0; i < ads.length; i++) {
-        if (window.adFilter.filter(ads[i])) {
+        if (window.adFilter.choose(ads[i])) {
           pinsFragment.appendChild(window.renderPin(ads[i]));
-          if (++pinNumber >= PINS_NUMBER) {
+          pinNumber++;
+          if (pinNumber >= PINS_NUMBER) {
             break;
           }
         }
