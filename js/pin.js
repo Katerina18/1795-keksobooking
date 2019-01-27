@@ -11,6 +11,7 @@
     img.alt = ad.offer.title;
     element.addEventListener('mouseup', ad.onClick);
     element.addEventListener('keydown', ad.onEnter);
+    ad.bindEmement(element);
     return element;
   };
 })();

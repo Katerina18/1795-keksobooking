@@ -1,5 +1,8 @@
 'use strict';
 (function () {
+  var Y_MIN = 130;
+  var Y_MAX = 630;
+
   var pinsElement = document.querySelector('.map__pins');
 
   // активное состояние страницы
@@ -18,13 +21,6 @@
     input.setAttribute('value', adressPinMain);
   }
 
-  window.closeCard = function () {
-    var card = document.querySelector('.popup');
-    if (card) {
-      card.remove();
-    }
-  };
-
   window.removePins = function () {
     var pinOther = document.querySelectorAll('.pinOther');
     if (pinOther) {
@@ -37,12 +33,15 @@
   window.clearPins = function () {
     window.closeCard();
     window.removePins();
+    window.clearAvatarFile();
     mainPinEnable = true;
     pinMain.focus();
     pinMain.style.left = pinMainDefaultLeft + 'px';
     pinMain.style.top = pinMainDefaultTop + 'px';
     adressPinMain = pinMainDefaultLeft + ', ' + pinMainDefaultTop;
     fillInputAddress();
+    window.blockPage();
+    document.querySelector('.map').classList.add('map--faded');
   };
 
 
@@ -70,9 +69,7 @@
       };
 
       var mapWidth = document.querySelector('.map__pins').clientWidth;
-      var mapHeight = document.querySelector('.map__pins').clientHeight;
       var pinWidth = pinMain.offsetWidth;
-      var pinHeight = pinMain.offsetHeight;
 
       if (pinMain.offsetLeft - shift.x < 0) {
         shift.x = pinMain.offsetLeft;
@@ -80,14 +77,14 @@
         shift.x = pinMain.offsetLeft - (mapWidth - pinWidth);
       }
 
-      if (pinMain.offsetTop - shift.y < 0) {
-        shift.y = pinMain.offsetTop;
-      } else if (pinMain.offsetTop - shift.y > mapHeight - pinHeight) {
-        shift.y = pinMain.offsetTop - (mapHeight - pinHeight);
+      if (pinMain.offsetTop - shift.y < Y_MIN) {
+        shift.y = pinMain.offsetTop - Y_MIN;
+      } else if (pinMain.offsetTop - shift.y > Y_MAX) {
+        shift.y = pinMain.offsetTop - Y_MAX;
       }
 
-      pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
       pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+      pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
 
       adressPinMain = parseInt(pinMain.style.left, 10) + ', ' + parseInt(pinMain.style.top, 10);
       fillInputAddress();
@@ -122,6 +119,7 @@
       document.querySelector('.map__filters').classList.remove('ad-form--disabled');
       document.querySelector('.ad-form').classList.remove('ad-form--disabled');
       window.avatar.removeAttribute('disabled', 'disabled');
+      document.querySelector('.map__features').removeAttribute('disabled', 'disabled');
       window.formFilter.forEach(function (item) {
         item.removeAttribute('disabled', 'disabled');
       });

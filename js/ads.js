@@ -2,15 +2,25 @@
 
 (function () {
   var ads = [];
+  var activeId = -1;
+
   var mapElement = document.querySelector('.map');
 
-  function createAd(response) {
+  function createAd(responseId, response) {
     var ad = {
       author: response.author,
       location: response.location,
       offer: response.offer,
+      element: null,
+      id: responseId,
+
+      bindEmement: function (element) {
+        ad.element = element;
+      },
+
       onClick: function () {
         window.closeCard();
+        ad.setActive();
 
         var input = document.getElementById('address');
         input.setAttribute('value', ad.offer.address);
@@ -24,9 +34,27 @@
         if (evt.keyCode === 13) {
           ad.onClick();
         }
+      },
+
+      setActive: function () {
+        pinUnactive();
+
+        if (ad.element) {
+          ad.element.classList.add('map__pin--active');
+          activeId = ad.id;
+        } else {
+          activeId = -1;
+        }
       }
     };
     return ad;
+  }
+
+  function pinUnactive() {
+    if (activeId >= 0 && activeId < ads.length && ads[activeId].element) {
+      ads[activeId].element.classList.remove('map__pin--active');
+    }
+    activeId = -1;
   }
 
   var errorMessage = null;
@@ -65,7 +93,7 @@
   function onDataSuccess(response) {
     try {
       for (var i = 0; i < response.length; i++) {
-        var ad = createAd(response[i]);
+        var ad = createAd(i, response[i]);
         ads.push(ad);
       }
 
@@ -83,4 +111,6 @@
   window.getAds = function () {
     return ads;
   };
+
+  window.pinUnactive = pinUnactive;
 })();

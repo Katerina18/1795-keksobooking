@@ -72,4 +72,12 @@
   };
 
   window.card = card;
+
+  window.closeCard = function () {
+    var popup = document.querySelector('.popup');
+    if (popup) {
+      popup.remove();
+      window.pinUnactive();
+    }
+  };
 })();

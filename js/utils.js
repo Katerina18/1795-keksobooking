@@ -1,8 +1,9 @@
 'use strict';
 
 (function () {
-  window.Utils = {
+  var DEBOUNCE_INTERVAL = 500; // ms
 
+  window.Utils = {
     // проверяем есть ли значение в массиве
     include: function (value, array) {
       if (Array.isArray(array) && value !== null) {
@@ -31,6 +32,20 @@
           element.click();
         }
       });
+    },
+
+    debounce: function (callback) {
+      var lastTimeout = null;
+
+      return function () {
+        var parameters = arguments;
+        if (lastTimeout) {
+          window.clearTimeout(lastTimeout);
+        }
+        lastTimeout = window.setTimeout(function () {
+          callback.apply(null, parameters);
+        }, DEBOUNCE_INTERVAL);
+      };
     }
   };
 })();
