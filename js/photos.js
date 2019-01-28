@@ -3,8 +3,8 @@
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
   var fileInput = document.querySelector('.ad-form__upload input[type=file]');
   var divPreview = document.querySelector('.ad-form__photo');
-  var width = 70;
-  var height = 70;
+  var WIDTH_PHOTO = 70;
+  var HEIGHT_PHOTO = 70;
   var divParent = divPreview.parentNode;
   divPreview.remove();
 
@@ -34,8 +34,8 @@
       var div = divPreview.cloneNode();
 
       var img = document.createElement('img');
-      img.width = width;
-      img.height = height;
+      img.width = WIDTH_PHOTO;
+      img.height = HEIGHT_PHOTO;
       img.src = reader.result;
 
       div.appendChild(img);
