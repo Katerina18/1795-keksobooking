@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var ENTER_KEYCODE = 13;
   var ads = [];
   var activeId = -1;
 
@@ -23,7 +24,7 @@
         ad.setActive();
 
         var input = document.querySelector('#address');
-        input.setAttribute('value', ad.offer.address);
+        input.value = ad.offer.address;
 
         var cardFragment = document.createDocumentFragment();
         cardFragment.appendChild(window.card.renderCard(ad));
@@ -31,7 +32,7 @@
       },
 
       onEnter: function (evt) {
-        if (evt.keyCode === 13) {
+        if (evt.keyCode === ENTER_KEYCODE) {
           ad.onClick();
         }
       },

@@ -2,6 +2,7 @@
 
 (function () {
   var DEBOUNCE_INTERVAL = 500; // ms
+  var ENTER_KEYCODE = 13;
 
   window.utils = {
     // проверяем есть ли значение в массиве
@@ -28,7 +29,7 @@
     addClickListener: function (element, onEvent) {
       element.addEventListener('click', onEvent);
       element.addEventListener('keyup', function (keyupEvent) {
-        if (keyupEvent.keyCode === 13) {
+        if (keyupEvent.keyCode === ENTER_KEYCODE) {
           element.click();
         }
       });

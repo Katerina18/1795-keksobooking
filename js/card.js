@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var ESC_KEYCODE = 27;
   var templateCard = document.querySelector('#card').content.querySelector('.map__card');
   var card = {
     closeButton: null,
@@ -12,7 +13,7 @@
     },
 
     onEscape: function (evt) {
-      if (evt.keyCode === 27) {
+      if (evt.keyCode === ESC_KEYCODE) {
         card.onClick();
       }
     },

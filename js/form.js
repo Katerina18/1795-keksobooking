@@ -1,6 +1,21 @@
 'use strict';
 
 (function () {
+  var ESC_KEYCODE = 27;
+  var STATUS_COD_OK = 200;
+  var MIN_LENGTH_TITLE = 30;
+  var BUNGALO_PRICE_MIN = 0;
+  var FLAT_PRICE_MIN = 1000;
+  var HOUSE_PRICE_MIN = 5000;
+  var PALACE_PRICE_MIN = 10000;
+  var PRICE_MIN = 0;
+  var TIMEOUT_FIST = '12:00';
+  var TIMEIN_FIST = '12:00';
+  var TIMEOUT_SECOND = '13:00';
+  var TIMEIN_SECOND = '13:00';
+  var TIMEOUT_THIRD = '14:00';
+  var TIMEIN_THIRD = '14:00';
+
   var form = document.querySelector('.ad-form');
   var formFields = document.querySelectorAll('.ad-form__element');
   var formFilter = document.querySelectorAll('.map__filter');
@@ -26,17 +41,17 @@
     document.querySelector('.map__filters').classList.add('ad-form--disabled');
 
     // блокируем форму с фильтрами
-    document.querySelector('.map__features').setAttribute('disabled', 'disabled');
+    document.querySelector('.map__features').disabled = true;
 
-    window.avatar.setAttribute('disabled', 'disabled');
+    window.avatar.disabled = true;
 
     formFilter.forEach(function (item) {
-      item.setAttribute('disabled', 'disabled');
+      item.disabled = true;
     });
 
     // блокируем формы объявления
     formFields.forEach(function (item) {
-      item.setAttribute('disabled', 'disabled');
+      item.disabled = true;
     });
 
     initialForm();
@@ -46,24 +61,24 @@
   function onTypeChanged(evt) {
     switch (evt.target.value) {
       case 'bungalo':
-        priceInput.placeholder = 0;
-        priceInput.min = 0;
+        priceInput.placeholder = BUNGALO_PRICE_MIN;
+        priceInput.min = BUNGALO_PRICE_MIN;
         break;
       case 'flat':
-        priceInput.placeholder = 1000;
-        priceInput.min = 1000;
+        priceInput.placeholder = FLAT_PRICE_MIN;
+        priceInput.min = FLAT_PRICE_MIN;
         break;
       case 'house':
-        priceInput.placeholder = 5000;
-        priceInput.min = 5000;
+        priceInput.placeholder = HOUSE_PRICE_MIN;
+        priceInput.min = HOUSE_PRICE_MIN;
         break;
       case 'palace':
-        priceInput.placeholder = 10000;
-        priceInput.min = 10000;
+        priceInput.placeholder = PALACE_PRICE_MIN;
+        priceInput.min = PALACE_PRICE_MIN;
         break;
       default:
-        priceInput.placeholder = 0;
-        priceInput.min = 0;
+        priceInput.placeholder = PRICE_MIN;
+        priceInput.min = PRICE_MIN;
         break;
     }
   }
@@ -73,17 +88,17 @@
     var timeinInput = document.querySelector('#timein');
 
     switch (evt.target.value) {
-      case '12:00':
-        timeoutInput.value = '12:00';
-        timeinInput.value = '12:00';
+      case TIMEOUT_FIST:
+        timeoutInput.value = TIMEOUT_FIST;
+        timeinInput.value = TIMEIN_FIST;
         break;
-      case '13:00':
-        timeoutInput.value = '13:00';
-        timeinInput.value = '13:00';
+      case TIMEOUT_SECOND:
+        timeoutInput.value = TIMEOUT_SECOND;
+        timeinInput.value = TIMEIN_SECOND;
         break;
-      case '14:00':
-        timeoutInput.value = '14:00';
-        timeinInput.value = '14:00';
+      case TIMEOUT_THIRD:
+        timeoutInput.value = TIMEOUT_THIRD;
+        timeinInput.value = TIMEIN_THIRD;
         break;
     }
   }
@@ -122,7 +137,7 @@
     parent.insertBefore(element, promo);
 
     function onSuccessEsc(evt) {
-      if (evt.keyCode === 27) {
+      if (evt.keyCode === ESC_KEYCODE) {
         document.removeEventListener('keydown', onSuccessEsc);
         element.removeEventListener('click', onSuccessClick);
         element.remove();
@@ -149,7 +164,7 @@
     var messageError = document.querySelector('.error');
 
     function onErrorEsc(evt) {
-      if (evt.keyCode === 27) {
+      if (evt.keyCode === ESC_KEYCODE) {
         document.removeEventListener('keydown', onErrorEsc);
         errorButton.removeEventListener('click', onErrorClick);
         messageError.removeEventListener('click', onErrorClick);
@@ -189,7 +204,7 @@
     http.open(form.method, form.action, true);
 
     http.onload = function () {
-      if (http.status === 200) {
+      if (http.status === STATUS_COD_OK) {
         showUploadMessage();
         form.reset();
         window.clearAvatarFile();
@@ -220,7 +235,7 @@
 
   title.addEventListener('input', function (evt) {
     var target = evt.target;
-    if (target.value.length < 30) {
+    if (target.value.length < MIN_LENGTH_TITLE) {
       target.setCustomValidity('Минимальная длина объявления — 30 символов');
     } else if (target.value.length > 100) {
       target.setCustomValidity('Превышена максимальная длина объявления');

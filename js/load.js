@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var STATUS_COD_OK = 200;
   var loader = {
     URL: 'https://js.dump.academy/keksobooking/data',
     funcSuccess: null,
@@ -15,7 +16,7 @@
       xhr.timeout = 10000;
 
       xhr.onload = function () {
-        if (xhr.status === 200) {
+        if (xhr.status === STATUS_COD_OK) {
           if (loader.funcSuccess) {
             loader.funcSuccess(xhr.response);
           }

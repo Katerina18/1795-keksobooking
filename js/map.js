@@ -17,7 +17,7 @@
 
   // функция добавляет адрес map__pin в инпут адреc
   function fillInputAddress() {
-    input.setAttribute('value', adressPinMain);
+    input.value = adressPinMain;
   }
 
   window.removePins = function () {

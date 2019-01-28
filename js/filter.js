@@ -1,6 +1,11 @@
 'use strict';
 
 (function () {
+  var LOW_PRICE_MAX = 10000;
+  var MIDDLE_PRICE_MIN = 10000;
+  var MIDDLE_PRICE_MAX = 50000;
+  var HIGH_PRICE_MIN = 50000;
+
   var filter = {
     TYPES: ['palace', 'flat', 'house', 'bungalo'],
     FEATURES: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
@@ -62,14 +67,14 @@
       switch (filter.selectPrice.value) {
         case 'low':
           filter.priceMin = null;
-          filter.priceMax = 10000;
+          filter.priceMax = LOW_PRICE_MAX;
           break;
         case 'middle':
-          filter.priceMin = 10000;
-          filter.priceMax = 50000;
+          filter.priceMin = MIDDLE_PRICE_MIN;
+          filter.priceMax = MIDDLE_PRICE_MAX;
           break;
         case 'high':
-          filter.priceMin = 50000;
+          filter.priceMin = HIGH_PRICE_MIN;
           filter.priceMax = null;
           break;
         default:
