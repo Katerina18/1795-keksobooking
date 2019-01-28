@@ -4,19 +4,21 @@
   var form = document.querySelector('.ad-form');
   var formFields = document.querySelectorAll('.ad-form__element');
   var formFilter = document.querySelectorAll('.map__filter');
+  var templateSuccess = document.querySelector('#success').content.querySelector('.success');
+  var templateError = document.querySelector('#error').content.querySelector('.error');
 
   window.formFields = formFields;
   window.formFilter = formFilter;
 
-  window.avatar = document.getElementById('avatar');
-  var priceInput = document.getElementById('price');
-  var roomNumber = document.getElementById('room_number');
-  var accommodationType = document.getElementById('type');
-  var timein = document.getElementById('timein');
-  var timeout = document.getElementById('timeout');
+  window.avatar = document.querySelector('#avatar');
+  var priceInput = document.querySelector('#price');
+  var roomNumber = document.querySelector('#room_number');
+  var accommodationType = document.querySelector('#type');
+  var timein = document.querySelector('#timein');
+  var timeout = document.querySelector('#timeout');
 
   // заголовок объявления
-  var title = document.getElementById('title');
+  var title = document.querySelector('#title');
 
   window.blockPage = function () {
     form.reset();
@@ -67,8 +69,8 @@
   }
 
   function onTimeChanged(evt) {
-    var timeoutInput = document.getElementById('timeout');
-    var timeinInput = document.getElementById('timein');
+    var timeoutInput = document.querySelector('#timeout');
+    var timeinInput = document.querySelector('#timein');
 
     switch (evt.target.value) {
       case '12:00':
@@ -88,7 +90,7 @@
 
   // валидация форм количество комнат и мест
   function disabledCapacity(dis) {
-    var options = document.getElementById('capacity').getElementsByTagName('option');
+    var options = document.querySelector('#capacity').getElementsByTagName('option');
 
     for (var i = 0; i < options.length && i < dis.length; i++) {
       options[i].disabled = dis[i];
@@ -96,7 +98,7 @@
   }
 
   function onCapacityChanged() {
-    var capacity = document.getElementById('capacity');
+    var capacity = document.querySelector('#capacity');
 
     if (roomNumber.value === '1') {
       disabledCapacity([false, true, true, true]);
@@ -114,8 +116,7 @@
   }
 
   function showUploadMessage() {
-    var template = document.querySelector('#success').content.querySelector('.success');
-    var element = template.cloneNode(true);
+    var element = templateSuccess.cloneNode(true);
     var promo = document.querySelector('.promo');
     var parent = promo.parentNode;
     parent.insertBefore(element, promo);
@@ -139,8 +140,7 @@
   }
 
   function showErrorMessage() {
-    var template = document.querySelector('#error').content.querySelector('.error');
-    var element = template.cloneNode(true);
+    var element = templateError.cloneNode(true);
     var promo = document.querySelector('.promo');
     var parent = promo.parentNode;
     parent.insertBefore(element, promo);

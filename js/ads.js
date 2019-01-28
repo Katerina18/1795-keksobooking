@@ -22,7 +22,7 @@
         window.closeCard();
         ad.setActive();
 
-        var input = document.getElementById('address');
+        var input = document.querySelector('#address');
         input.setAttribute('value', ad.offer.address);
 
         var cardFragment = document.createDocumentFragment();

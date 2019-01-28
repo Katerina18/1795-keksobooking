@@ -5,20 +5,18 @@
   var PINS_NUMBER = 5;
 
   var pins = document.querySelector('.map__pins');
-
-  // активное состояние страницы
   var pinMain = document.querySelector('.map__pin--main');
   var adressPinMain = parseInt(pinMain.style.left, 10) + ', ' + parseInt(pinMain.style.top, 10);
   var mainPinEnable = true;
   var pinMainDefaultLeft = parseInt(pinMain.style.left, 10);
   var pinMainDefaultTop = parseInt(pinMain.style.top, 10);
+  var input = document.querySelector('#address');
 
   // кнопка очистить
   var buttonReset = document.querySelector('.ad-form__reset');
 
   // функция добавляет адрес map__pin в инпут адреc
   function fillInputAddress() {
-    var input = document.getElementById('address');
     input.setAttribute('value', adressPinMain);
   }
 

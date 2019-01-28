@@ -11,17 +11,17 @@
     guests: null,
     features: [],
 
-    selectType: document.getElementById('housing-type'),
-    selectPrice: document.getElementById('housing-price'),
-    selectRooms: document.getElementById('housing-rooms'),
-    selectGuests: document.getElementById('housing-guests'),
-    featuresInput: document.getElementById('housing-features'),
-    checkboxWiFi: document.getElementById('filter-wifi'),
-    checkboxDisher: document.getElementById('filter-dishwasher'),
-    checkboxParking: document.getElementById('filter-parking'),
-    checkboxWasher: document.getElementById('filter-washer'),
-    checkboxElevator: document.getElementById('filter-elevator'),
-    checkboxCondition: document.getElementById('filter-conditioner'),
+    selectType: document.querySelector('#housing-type'),
+    selectPrice: document.querySelector('#housing-price'),
+    selectRooms: document.querySelector('#housing-rooms'),
+    selectGuests: document.querySelector('#housing-guests'),
+    featuresInput: document.querySelector('#housing-features'),
+    checkboxWiFi: document.querySelector('#filter-wifi'),
+    checkboxDisher: document.querySelector('#filter-dishwasher'),
+    checkboxParking: document.querySelector('#filter-parking'),
+    checkboxWasher: document.querySelector('#filter-washer'),
+    checkboxElevator: document.querySelector('#filter-elevator'),
+    checkboxCondition: document.querySelector('#filter-conditioner'),
 
     clear: function () {
       filter.priceMin = null;

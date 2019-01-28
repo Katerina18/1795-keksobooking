@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var templateCard = document.querySelector('#card').content.querySelector('.map__card');
   var card = {
     closeButton: null,
 
@@ -17,8 +18,7 @@
     },
 
     renderCard: function (ad) {
-      var template = document.querySelector('#card').content.querySelector('.map__card');
-      var element = template.cloneNode(true);
+      var element = templateCard.cloneNode(true);
       element.children[0].src = ad.author.avatar;
       element.querySelector('.popup__title').textContent = ad.offer.title;
       element.querySelector('.popup__text--address').textContent = ad.offer.address;

@@ -1,8 +1,8 @@
 'use strict';
 (function () {
+  var templatePin = document.querySelector('#pin').content.querySelector('.map__pin');
   window.renderPin = function (ad) {
-    var template = document.querySelector('#pin').content.querySelector('.map__pin');
-    var element = template.cloneNode(true);
+    var element = templatePin.cloneNode(true);
     element.classList.add('pinOther');
     element.style.top = '' + ad.location.y + 'px';
     element.style.left = '' + ad.location.x + 'px';
