@@ -2,8 +2,9 @@
 (function () {
   var Y_MIN = 130;
   var Y_MAX = 630;
+  var PINS_NUMBER = 5;
 
-  var pinsElement = document.querySelector('.map__pins');
+  var pins = document.querySelector('.map__pins');
 
   // активное состояние страницы
   var pinMain = document.querySelector('.map__pin--main');
@@ -34,6 +35,7 @@
     window.closeCard();
     window.removePins();
     window.clearAvatarFile();
+    window.clearPhotoFiles();
     mainPinEnable = true;
     pinMain.focus();
     pinMain.style.left = pinMainDefaultLeft + 'px';
@@ -109,8 +111,6 @@
   }
 
   window.placePins = function () {
-    var PINS_NUMBER = 5;
-
     if (mainPinEnable) {
       mainPinEnable = false;
 
@@ -142,7 +142,7 @@
       }
 
       if (pinsFragment.length !== 0) {
-        pinsElement.appendChild(pinsFragment);
+        pins.appendChild(pinsFragment);
       }
     }
   };
@@ -151,10 +151,10 @@
   pinMain.addEventListener('mousedown', onPinMove);
 
   // клик на кнопку очистить
-  window.Utils.addClickListener(buttonReset, window.clearPins);
+  window.utils.addClickListener(buttonReset, window.clearPins);
 
   // нажатие на главную метку - страница в активном состоянии
-  window.Utils.addClickListener(pinMain, window.placePins);
+  window.utils.addClickListener(pinMain, window.placePins);
 
   pinMain.focus();
 

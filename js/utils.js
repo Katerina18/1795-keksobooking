@@ -3,7 +3,7 @@
 (function () {
   var DEBOUNCE_INTERVAL = 500; // ms
 
-  window.Utils = {
+  window.utils = {
     // проверяем есть ли значение в массиве
     include: function (value, array) {
       if (Array.isArray(array) && value !== null) {

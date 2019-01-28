@@ -15,7 +15,8 @@
   var timein = document.getElementById('timein');
   var timeout = document.getElementById('timeout');
 
-  // форма объявления
+  // заголовок объявления
+  var title = document.getElementById('title');
 
   window.blockPage = function () {
     form.reset();
@@ -39,11 +40,8 @@
     initialForm();
   };
 
-  // инпут заголовок объявления
-  var headerAdInput = document.getElementById('title');
-
   // валидация формы тип жилья / цена
-  function onSelectChanged(evt) {
+  function onTypeChanged(evt) {
     switch (evt.target.value) {
       case 'bungalo':
         priceInput.placeholder = 0;
@@ -174,43 +172,53 @@
   // отправляем данные на сервер
   form.addEventListener('submit', function (ev) {
     var data = new FormData(form);
-    var file = window.getAvatarFile();
-    if (file) {
-      data.append('avatar', file, file.name);
+    var avatarFile = window.getAvatarFile();
+    var photoFiles = window.getPhotoFiles();
+
+    if (avatarFile) {
+      data.append('avatar', avatarFile, avatarFile.name);
     }
 
+    if (photoFiles && Array.isArray(photoFiles)) {
+      for (var i = 0; i < photoFiles.length; i++) {
+        data.append('photo' + i, photoFiles[i], photoFiles[i].name);
+      }
+    }
 
     var http = new XMLHttpRequest();
     http.open(form.method, form.action, true);
+
     http.onload = function () {
       if (http.status === 200) {
         showUploadMessage();
         form.reset();
         window.clearAvatarFile();
+        window.clearPhotoFiles();
         window.clearPins();
       } else {
         showErrorMessage();
       }
     };
+
     http.send(data);
     ev.preventDefault();
   }, false);
 
 
   // валидация формы заголовок объявления, сообщения об ошибке
-  headerAdInput.addEventListener('invalid', function () {
-    if (headerAdInput.validity.tooShort) {
-      headerAdInput.setCustomValidity('Минимальная длина объявления — 30 символов');
-    } else if (headerAdInput.validity.tooLong) {
-      headerAdInput.setCustomValidity('Заголовок не должен превышать 100 символов');
-    } else if (headerAdInput.validity.valueMissing) {
-      headerAdInput.setCustomValidity('Обязательное поле');
+  title.addEventListener('invalid', function () {
+    if (title.validity.tooShort) {
+      title.setCustomValidity('Минимальная длина объявления — 30 символов');
+    } else if (title.validity.tooLong) {
+      title.setCustomValidity('Заголовок не должен превышать 100 символов');
+    } else if (title.validity.valueMissing) {
+      title.setCustomValidity('Обязательное поле');
     } else {
-      headerAdInput.setCustomValidity('Ошибка');
+      title.setCustomValidity('Ошибка');
     }
   });
 
-  headerAdInput.addEventListener('input', function (evt) {
+  title.addEventListener('input', function (evt) {
     var target = evt.target;
     if (target.value.length < 30) {
       target.setCustomValidity('Минимальная длина объявления — 30 символов');
@@ -247,7 +255,7 @@
   });
 
   // валидация формы тип жилья / цена
-  accommodationType.addEventListener('change', onSelectChanged, false);
+  accommodationType.addEventListener('change', onTypeChanged, false);
   roomNumber.addEventListener('change', onCapacityChanged, false);
   timein.addEventListener('change', onTimeChanged, false);
   timeout.addEventListener('change', onTimeChanged, false);

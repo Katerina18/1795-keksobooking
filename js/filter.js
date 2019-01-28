@@ -36,29 +36,28 @@
       if (ad && ad.offer) {
         var offer = ad.offer;
 
-        var result = window.Utils.isEqual(offer.type, filter.type) &&
-                     window.Utils.isBetween(offer.price, filter.priceMin, filter.priceMax) &&
-                     window.Utils.isEqual(offer.rooms, filter.rooms) &&
-                     window.Utils.isEqual(offer.guests, filter.guests);
+        var result = window.utils.isEqual(offer.type, filter.type) &&
+                     window.utils.isBetween(offer.price, filter.priceMin, filter.priceMax) &&
+                     window.utils.isEqual(offer.rooms, filter.rooms) &&
+                     window.utils.isEqual(offer.guests, filter.guests);
 
         if (offer.features !== null && filter.features !== null) {
           for (var i = 0; i < filter.features.length; i++) {
-            result = result & window.Utils.include(filter.features[i], offer.features);
+            result = result & window.utils.include(filter.features[i], offer.features);
             if (!result) {
               break;
             }
           }
         }
         return result;
-      } else {
-        return false;
       }
+      return false;
     },
 
     initial: function () {
       filter.clear();
 
-      filter.type = window.Utils.include(filter.selectType.value, filter.TYPES) ? filter.selectType.value : null;
+      filter.type = window.utils.include(filter.selectType.value, filter.TYPES) ? filter.selectType.value : null;
 
       switch (filter.selectPrice.value) {
         case 'low':
@@ -124,17 +123,17 @@
     }
   };
 
-  filter.selectType.addEventListener('change', window.Utils.debounce(filter.onChange));
-  filter.selectPrice.addEventListener('change', window.Utils.debounce(filter.onChange));
-  filter.selectRooms.addEventListener('change', window.Utils.debounce(filter.onChange));
-  filter.selectGuests.addEventListener('change', window.Utils.debounce(filter.onChange));
+  filter.selectType.addEventListener('change', window.utils.debounce(filter.onChange));
+  filter.selectPrice.addEventListener('change', window.utils.debounce(filter.onChange));
+  filter.selectRooms.addEventListener('change', window.utils.debounce(filter.onChange));
+  filter.selectGuests.addEventListener('change', window.utils.debounce(filter.onChange));
 
-  window.Utils.addClickListener(filter.checkboxWiFi, window.Utils.debounce(filter.onChange));
-  window.Utils.addClickListener(filter.checkboxDisher, window.Utils.debounce(filter.onChange));
-  window.Utils.addClickListener(filter.checkboxParking, window.Utils.debounce(filter.onChange));
-  window.Utils.addClickListener(filter.checkboxWasher, window.Utils.debounce(filter.onChange));
-  window.Utils.addClickListener(filter.checkboxElevator, window.Utils.debounce(filter.onChange));
-  window.Utils.addClickListener(filter.checkboxCondition, window.Utils.debounce(filter.onChange));
+  window.utils.addClickListener(filter.checkboxWiFi, window.utils.debounce(filter.onChange));
+  window.utils.addClickListener(filter.checkboxDisher, window.utils.debounce(filter.onChange));
+  window.utils.addClickListener(filter.checkboxParking, window.utils.debounce(filter.onChange));
+  window.utils.addClickListener(filter.checkboxWasher, window.utils.debounce(filter.onChange));
+  window.utils.addClickListener(filter.checkboxElevator, window.utils.debounce(filter.onChange));
+  window.utils.addClickListener(filter.checkboxCondition, window.utils.debounce(filter.onChange));
 
   window.adFilter = filter;
 })();

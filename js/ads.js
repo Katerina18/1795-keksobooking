@@ -4,7 +4,7 @@
   var ads = [];
   var activeId = -1;
 
-  var mapElement = document.querySelector('.map');
+  var map = document.querySelector('.map');
 
   function createAd(responseId, response) {
     var ad = {
@@ -27,7 +27,7 @@
 
         var cardFragment = document.createDocumentFragment();
         cardFragment.appendChild(window.card.renderCard(ad));
-        mapElement.insertBefore(cardFragment, mapElement.querySelector('.map__filters-container'));
+        map.insertBefore(cardFragment, map.querySelector('.map__filters-container'));
       },
 
       onEnter: function (evt) {

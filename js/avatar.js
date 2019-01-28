@@ -5,6 +5,8 @@
   var preview = document.querySelector('.ad-form-header__preview img');
   var defaultAvatar = preview.src;
 
+  var dropZone = document.querySelector('.ad-form-header__drop-zone');
+
   var avatarFile = null;
 
   window.getAvatarFile = function () {
@@ -41,11 +43,11 @@
   }
 
   // Drag and drop
-  window.dragAvatarOverHandler = function (evt) {
+  function onAvataDrag(evt) {
     evt.preventDefault();
-  };
+  }
 
-  window.dropAvatarHandler = function (evt) {
+  function onAvatarDrop(evt) {
     evt.preventDefault();
 
     if (evt.dataTransfer.items) {
@@ -70,7 +72,7 @@
     }
     // Pass event to removeDragData for cleanup
     removeDragData(evt);
-  };
+  }
 
   function removeDragData(evt) {
 
@@ -83,4 +85,6 @@
     }
   }
 
+  dropZone.addEventListener('drop', onAvatarDrop, false);
+  dropZone.addEventListener('dragover', onAvataDrag, false);
 })();
