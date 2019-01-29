@@ -1,10 +1,10 @@
 'use strict';
 (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
-  var fileInput = document.querySelector('.ad-form__upload input[type=file]');
-  var divPreview = document.querySelector('.ad-form__photo');
   var WIDTH_PHOTO = 70;
   var HEIGHT_PHOTO = 70;
+  var fileInput = document.querySelector('.ad-form__upload input[type=file]');
+  var divPreview = document.querySelector('.ad-form__photo');
   var divParent = divPreview.parentNode;
   divPreview.remove();
 

@@ -9,13 +9,14 @@
 
   var avatarFile = null;
 
-  window.getAvatarFile = function () {
-    return avatarFile;
-  };
-
-  window.clearAvatarFile = function () {
-    avatarFile = null;
-    preview.src = defaultAvatar;
+  window.avatar = {
+    getAvatarFile: function () {
+      return avatarFile;
+    },
+    clearAvatarFile: function () {
+      avatarFile = null;
+      preview.src = defaultAvatar;
+    }
   };
 
   fileInput.addEventListener('change', function () {

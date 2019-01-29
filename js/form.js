@@ -25,7 +25,7 @@
   window.formFields = formFields;
   window.formFilter = formFilter;
 
-  window.avatar = document.querySelector('#avatar');
+  window.avatarForm = document.querySelector('#avatar');
   var priceInput = document.querySelector('#price');
   var roomNumber = document.querySelector('#room_number');
   var accommodationType = document.querySelector('#type');
@@ -43,7 +43,7 @@
     // блокируем форму с фильтрами
     document.querySelector('.map__features').disabled = true;
 
-    window.avatar.disabled = true;
+    window.avatarForm.disabled = true;
 
     formFilter.forEach(function (item) {
       item.disabled = true;
@@ -187,7 +187,7 @@
   // отправляем данные на сервер
   form.addEventListener('submit', function (ev) {
     var data = new FormData(form);
-    var avatarFile = window.getAvatarFile();
+    var avatarFile = window.avatar.getAvatarFile();
     var photoFiles = window.getPhotoFiles();
 
     if (avatarFile) {
@@ -207,7 +207,7 @@
       if (http.status === STATUS_COD_OK) {
         showUploadMessage();
         form.reset();
-        window.clearAvatarFile();
+        window.avatar.clearAvatarFile();
         window.clearPhotoFiles();
         window.clearPins();
       } else {

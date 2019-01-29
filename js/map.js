@@ -30,9 +30,9 @@
   };
 
   window.clearPins = function () {
-    window.closeCard();
+    window.card.closeCard();
     window.removePins();
-    window.clearAvatarFile();
+    window.avatar.clearAvatarFile();
     window.clearPhotoFiles();
     mainPinEnable = true;
     pinMain.focus();
@@ -116,7 +116,7 @@
       document.querySelector('.map').classList.remove('map--faded');
       document.querySelector('.map__filters').classList.remove('ad-form--disabled');
       document.querySelector('.ad-form').classList.remove('ad-form--disabled');
-      window.avatar.removeAttribute('disabled', 'disabled');
+      window.avatarForm.removeAttribute('disabled', 'disabled');
       document.querySelector('.map__features').removeAttribute('disabled', 'disabled');
       window.formFilter.forEach(function (item) {
         item.removeAttribute('disabled', 'disabled');

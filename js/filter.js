@@ -128,17 +128,19 @@
     }
   };
 
-  filter.selectType.addEventListener('change', window.utils.debounce(filter.onChange));
-  filter.selectPrice.addEventListener('change', window.utils.debounce(filter.onChange));
-  filter.selectRooms.addEventListener('change', window.utils.debounce(filter.onChange));
-  filter.selectGuests.addEventListener('change', window.utils.debounce(filter.onChange));
+  var onFilterChange = window.utils.debounce(filter.onChange);
 
-  window.utils.addClickListener(filter.checkboxWiFi, window.utils.debounce(filter.onChange));
-  window.utils.addClickListener(filter.checkboxDisher, window.utils.debounce(filter.onChange));
-  window.utils.addClickListener(filter.checkboxParking, window.utils.debounce(filter.onChange));
-  window.utils.addClickListener(filter.checkboxWasher, window.utils.debounce(filter.onChange));
-  window.utils.addClickListener(filter.checkboxElevator, window.utils.debounce(filter.onChange));
-  window.utils.addClickListener(filter.checkboxCondition, window.utils.debounce(filter.onChange));
+  filter.selectType.addEventListener('change', onFilterChange);
+  filter.selectPrice.addEventListener('change', onFilterChange);
+  filter.selectRooms.addEventListener('change', onFilterChange);
+  filter.selectGuests.addEventListener('change', onFilterChange);
+
+  window.utils.addClickListener(filter.checkboxWiFi, onFilterChange);
+  window.utils.addClickListener(filter.checkboxDisher, onFilterChange);
+  window.utils.addClickListener(filter.checkboxParking, onFilterChange);
+  window.utils.addClickListener(filter.checkboxWasher, onFilterChange);
+  window.utils.addClickListener(filter.checkboxElevator, onFilterChange);
+  window.utils.addClickListener(filter.checkboxCondition, onFilterChange);
 
   window.adFilter = filter;
 })();

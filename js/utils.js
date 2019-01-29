@@ -36,15 +36,15 @@
     },
 
     debounce: function (callback) {
-      var lastTimeout = null;
+      var timeoutId = null;
 
       return function () {
-        var parameters = arguments;
-        if (lastTimeout) {
-          window.clearTimeout(lastTimeout);
+        if (typeof timeoutID === 'number') {
+          window.clearTimeout(timeoutId);
         }
-        lastTimeout = window.setTimeout(function () {
-          callback.apply(null, parameters);
+
+        timeoutId = window.setTimeout(function () {
+          callback.apply(null, arguments);
         }, DEBOUNCE_INTERVAL);
       };
     }

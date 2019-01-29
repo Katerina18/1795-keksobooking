@@ -20,14 +20,14 @@
       },
 
       onClick: function () {
-        window.closeCard();
+        window.card.closeCard();
         ad.setActive();
 
         var input = document.querySelector('#address');
         input.value = ad.offer.address;
 
         var cardFragment = document.createDocumentFragment();
-        cardFragment.appendChild(window.card.renderCard(ad));
+        cardFragment.appendChild(window.card.card.renderCard(ad));
         map.insertBefore(cardFragment, map.querySelector('.map__filters-container'));
       },
 
