@@ -41,7 +41,6 @@
       return function () {
         if (typeof timeoutId === 'number') {
           window.clearTimeout(timeoutId);
-          console.log('Clear timeoutId = ', timeoutId);
         }
 
         timeoutId = window.setTimeout(function () {
